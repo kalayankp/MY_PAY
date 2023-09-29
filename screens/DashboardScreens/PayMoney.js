@@ -1,87 +1,99 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, Dimensions, Keyboard, Alert } from 'react-native'
 
-import {View,Text,TextInput,TouchableOpacity} from 'react-native'
+const PayMoney = ({ navigation }) => {
+  let countryCode = '+91'
+  const [active, setActive] = useState(false)
+  const [senderMobNo, setSenderMobNo] = useState()
+  const [money, setMoney] = useState('0')
 
 
-const PayMoney=()=>{
-  let countryCode= '+91'
-const [active,setActive]=useState(false)
-const [money,setMoney]=useState('0')
- const [updatedMoney,setUpdatedMoney] = useState(0)
- 
-const collectAllMoney=()=>{
-  setUpdatedMoney(route.params?.datas)
-};
+  const SendMoney = () => {
+    fetch('http://192.168.1.49:7000/bills/walletToWalletTransfer', {
+      method: 'POST',
+      body: JSON.stringify({
+        'mobile': senderMobNo,
+        "amount": money 
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        if (data.status === true) {
 
-// const newRef= useRef()
-const updatevalue=()=>{
-  useEffect(()=>{
-    setMoney('1000')
-  })
-}
-const isDisabled=()=>{
-  let data=money
-  if(data!==0){
-setActive(true)
+          //console.log('sended money', data);
+          navigation.navigate("PaymentDone", {
+            'amount': money,
+            'time': data.data.result.Timestamp,
+            'name': data.data.result.name,
+            'message': data.data.result.message,
+            'transferId': data.data.result.transfer_id
 
-  }else{
-    setActive(false)
-  }
-  
-}
-  return(
-    <View style={{padding:20,marginTop:'12%'}}>
-      <Text style={{fontSize:30,fontWeight:'bold'}}>SEND MONEY</ Text>
- <View style={{flexDirection:'row',marginTop:30,justifyContent:'space-between'}}>
-   <View>
-      <Text style={{fontSize:20}}> Available Balance </ Text>
-      </View>
-      <View>
-       
-      <Text style={{fontSize:25,marginTop:-5,borderBottomWidth:2,borderColor:'grey',color:'#3f46c8'}}>{'\u20B9'}  100000 </ Text>
-      </View>
-   </View>
-   <View style={{borderWidth:2,padding:20,marginTop:'20%',borderRadius:20,borderLeftColor:'grey',borderTopColor:'grey',borderBottomColor:'grey',borderRightColor:'grey',borderRightWidth:5,borderBottomWidth:5, opacity: 0.5,}}>
-      <Text style={{fontSize:22,padding:8,fontWeight:'bold',color:'black',marginTop:20}}> Enter Mobile No </ Text>
-     
-      <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'grey'}}>
-        <Text style={{fontSize:28,marginTop:8}}>{countryCode}</Text>
-        <TextInput placeholder='9876543210' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={6} style={{fontSize:26,borderWidth: 0,width:210,marginLeft:8}}/>
-       </View>
-       <Text style={{fontSize:20,padding:8,fontWeight:'bold',color:'black',marginTop:20}}> Enter Amount </ Text>
-       <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'grey'}}>
-        <Text style={{fontSize:28,marginTop:6}}>{'\u20B9'}</Text>
-        <TextInput placeholder='1000' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={10} style={{fontSize:23,borderWidth: 0,width:120,marginTop:2,marginLeft:10}}/>
-       </View>
-    </View>
-      <View style={{marginTop:"14%",alignItems:'center'}}>
-        <TouchableOpacity  
-         onPress={() => {
-         navigation.navigate({
-            name: 'PaymentDone',
-            params: { data: money },
-            merge: true,
           });
-        }}
-        style={{width:'80%',height:62,marginTop:112,padding:10,borderRadius:20,borderWidth:1,alignItems:'center',justifyContent:'center',backgroundColor: '#3f46c8'}}>
-        <Text style={{fontSize:22,color:'white',fontWeight:'bold'}}>PAY</Text>
-      </TouchableOpacity>
+        }
+        else {
+          Alert.alert(data.data.result.message)
+        }
+      }
+      ).catch((err) => {
+        Alert.alert(err.message)
+        console.log('error', err.message);
+      })
+  }
 
-      <TouchableOpacity 
-      onPress={() => {
-        navigation.navigate({
-           name: 'Homes',
-           params: { datas:money},
-           merge: true,
-         });
-       }}
-       style={{fontSize:14,color:'white',fontWeight:'bold',color:'black',marginLeft:180,marginTop:5}}
-      >
-      <Text style={{color:'black'}}> Back To Home </Text>
-      </TouchableOpacity>
+  return (
+    <SafeAreaView style={{}}>
+      <View style={{ backgroundColor: '#132fba', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginLeft: 0.5, marginRight: 0.5 }}>
+        <View style={{ flexDirection: 'row', padding: 15, }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              style={{ width: 25, height: 30, }}
+              source={require('../../assests/images/leftArrow.png')}
+            />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 20, fontWeight: '400', justifyContent: 'center', textAlign: 'center', color: 'white', marginLeft: '30%' }}>Send Money</ Text>
+        </View>
       </View>
-    </View>
-   
+
+      <View style={{ width: '100%', height: '10%', zIndex: -1, marginTop: -11, backgroundColor: '#E8E8E8' }}>
+      </View>
+
+      <View style={{ margin: '5%', width: '90%' }}>
+        <View style={{}}>
+
+          <Text style={{ fontSize: 20, padding: 8, fontWeight: 'bold', color: 'black', marginTop: 1, color: 'black' }}> Enter Mobile No </ Text>
+
+          <View style={{ flexDirection: 'row', marginTop: 10, borderBottomWidth: 2, borderColor: 'black' }}>
+            <Text style={{ fontSize: 28, marginTop: 8, color: 'black' }}>{countryCode}</Text>
+            <TextInput placeholder='9876543210' placeholderTextColor="grey" onChangeText={(e) => { setSenderMobNo(e) }} keyboardType="numeric" maxLength={10} style={{ fontSize: 26, borderWidth: 0, width: 210, marginLeft: 8, color: 'black' }} />
+          </View>
+          <Text style={{ fontSize: 20, padding: 8, fontWeight: 'bold', color: 'black', marginTop: 20, color: 'black' }}> Enter Amount </ Text>
+          <View style={{ flexDirection: 'row', marginTop: 10, borderBottomWidth: 2, borderColor: 'black' }}>
+            <Text style={{ fontSize: 28, marginTop: 6, color: 'black' }}>{'\u20B9'}</Text>
+            <TextInput placeholder='1000' placeholderTextColor='grey' onChangeText={(e) => { setMoney(e) }} keyboardType="numeric" maxLength={10} style={{ fontSize: 23, borderWidth: 0, width: 120, marginTop: 2, marginLeft: 10, color: 'black' }} />
+          </View>
+        </View>
+        <View stylele={{ margin: 10 }}>
+          <Image source={require('../../assests/icons/ringpeIcons.png')} style={{ width: '100%', height: 122, marginTop: "10%", }} />
+        </View>
+      </View>
+
+
+      <View style={{ width: '100%', height: '50%', backgroundColor: '#E8E8E8', }}>
+        <View style={{ alignItems: 'center', marginTop: "10%", }}>
+          <TouchableOpacity
+            onPress={
+              SendMoney}
+            style={{ width: '80%', height: 62, padding: 10, borderRadius: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#3f46c8' }}>
+            <Text style={{ fontSize: 22, color: 'white', fontWeight: 'bold' }}>PAY</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+ 
   )
 }
-export default PayMoney
+export default PayMoney 

@@ -1,6 +1,6 @@
 import { View, Text,Image } from 'react-native'
 import React from 'react'
-
+  
 const MiniStatement = () => {
   return (
     <View>
@@ -12,10 +12,10 @@ const MiniStatement = () => {
     
   </View>
   <View style={{borderWidth:1,width:'100%',marginTop:-12}}></View>
-
+ 
 {/* Data listing  */}
 
-  </View>
+  </View> 
   )
 }
 

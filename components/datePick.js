@@ -39,7 +39,7 @@ const DatePick = () => {
     <Text style={{textAlign:'center',justifyContent:'center',marginTop:4,padding:4,fontSize:20,color:'black'}}>{`${selectedDate? moment(selectedDate).format("DD / MM / YYYY"):"DD / MM / YYYY"}`}</Text>
 </TouchableOpacity>
 </View>
-</View>
+</View> 
     </View>
     
   );

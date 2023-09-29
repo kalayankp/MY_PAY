@@ -14,7 +14,7 @@ const WelcomeScreen = ({ navigation }) => {
     // const handleClickSignUp = () => {
     //     setActiveSignUp(!activeSignup)
     // };
-
+  
     return (
         <View style={{ height: '100%' }}>
 

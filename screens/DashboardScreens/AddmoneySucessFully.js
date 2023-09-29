@@ -13,22 +13,21 @@ export default function AddmoneySucessFully({ navigation, route }) {
       }, [route.params?.data]);
   return (
     <View  style={{flex:1,justifyContent:'center',padding:42}}>
-      
+       
       <View>
-      <Text style={{fontSize:28,}}> Money Added SuccessFully in Wallet</Text>
+      <Text style={{fontSize:28,color:'black'}}> Money Added SuccessFully in Wallet</Text>
       <View  style={{flexDirection:'row',marginTop:32}}>
-       <Text style={{fontSize:34,}}> {'\u20B9'} </Text>
-       <Text style={{fontSize:34,}}> {route.params?.data}.00 </Text>
+       <Text style={{fontSize:34,color:'black'}}> {'\u20B9'} </Text>
+       <Text style={{fontSize:34,color:'black'}}> {route.params?.data}.00 </Text>
       </View>
       <View  style={{justifyContent:'center', alignItems:'center',marginTop:22,}}>
-      <Image
-        source={require('../../sucess.png')}
+      {/* <Image
+        source={require('../../assests/images/sucess.png')}
         style={{
           width: 103,
           height: 108,
-          
         }}
-      />
+      /> */}
       </View>
       </View>
     <TouchableOpacity 
@@ -40,7 +39,7 @@ export default function AddmoneySucessFully({ navigation, route }) {
          });
        }}
     style={{borderWidth:2,borderRadius:22, justifyContent:'center',marginTop:100,height:60,backgroundColor:'#3f46c8'}} >
-      <Text style={{fontSize:25,textAlign:'center',color:'white'}}> Return Home</Text>
+      <Text style={{fontSize:25,textAlign:'center',color:'black'}}> Return Home</Text>
     </TouchableOpacity>
     </View>
   );

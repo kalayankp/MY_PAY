@@ -16,17 +16,17 @@ const PrepaidMobile=({ navigation, route })=>{
   const [value, setValue] = useState(null);
   return(
     <View style={{padding:20,marginTop:'10%',}}>
-      <Text style={{fontSize:22,fontWeight:'bold',textAlign:'center'}}>PREPAID MOBILE RECHARGE</ Text>
+      <Text style={{fontSize:22,fontWeight:'bold',textAlign:'center',color:'black'}}>PREPAID MOBILE RECHARGE</ Text>
 
    <View style={{marginTop:'20%'}}>
       <Text style={{fontSize:22,padding:8,fontWeight:'bold',color:'black',marginTop:20}}> Enter Mobile No </ Text>
      
-      <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'grey'}}>
-        <Text style={{fontSize:28,marginTop:8}}>{countryCode}</Text>
-        <TextInput placeholder='9876543210' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={6} style={{fontSize:26,borderWidth: 0,width:210,marginLeft:8}}/>
+      <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'black'}}>
+        <Text style={{fontSize:28,marginTop:8,color:'black'}}>{countryCode}</Text>
+        <TextInput placeholder='9876543210' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={6} style={{fontSize:26,borderWidth: 0,width:210,marginLeft:8,color:'black'}}/>
        </View>
         
-        <View style={{borderBottomWidth:2,borderColor:'grey'}}>
+        <View style={{borderBottomWidth:2,borderColor:'black'}}>
          <Dropdown
         style={styles.dropdown}
         placeholderStyle={styles.placeholderStyle}
@@ -49,9 +49,9 @@ const PrepaidMobile=({ navigation, route })=>{
        <Text style={{fontSize:20,padding:8,fontWeight:'bold',color:'black',marginTop:-32,}}> {value} </ Text>
        </View>
        <Text style={{fontSize:20,padding:8,fontWeight:'bold',color:'black',marginTop:20}}> Enter Amount </ Text>
-       <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'grey'}}>
+       <View style={{flexDirection:'row',marginTop:10,borderBottomWidth:2,borderColor:'black'}}>
         <Text style={{fontSize:28,marginTop:6}}>{'\u20B9'}</Text>
-        <TextInput placeholder='1000' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={10} style={{fontSize:23,borderWidth: 0,width:120,marginTop:2,marginLeft:10}}/>
+        <TextInput placeholder='1000' onChangeText={(e)=>{setMoney(e)}} keyboardType="numeric" maxLength={10} style={{fontSize:23,borderWidth: 0,width:120,marginTop:2,marginLeft:10,color:'black'}}/>
        </View>
     </View>
       <View style={{marginTop:"14%",alignItems:'center'}}>

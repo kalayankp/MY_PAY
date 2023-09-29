@@ -8,5 +8,5 @@ const TrasactionScreen = () => {
     </View>
   )
 }
-
-export default TrasactionScreen
+ 
+export default TrasactionScreen 

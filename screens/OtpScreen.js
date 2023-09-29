@@ -6,18 +6,17 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNOtpVerify from 'react-native-otp-verify';
 import LinearGradient from 'react-native-linear-gradient';
-
+import { REACT_APP_BASE_URL } from "@env"
 const CELL_COUNT = 4;
 
-const OtpScreen = ({ navigation,route }) => {
+const OtpScreen = ({ navigation, route }) => {
   const [value, setValue] = useState();
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-
     value,
     setValue,
   });
@@ -26,24 +25,24 @@ const OtpScreen = ({ navigation,route }) => {
   // auto detect otp code
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(30);
-  const [tokenId, setTokenId] = useState('');
-  const [statuss,setStatuss]  = useState('')
-  const [errOtp,seterrOtp]  = useState('')
-const [panValue,setPanValue]  = useState('')
+  // const [tokenId, setTokenId] = useState('');
+  // const [statuss,setStatuss]  = useState('')
+  // const [errOtp,seterrOtp]  = useState('')
+  const [panValue, setPanValue] = useState('')
 
-//-------Getting  ID-------------------------
+  //-------Getting  ID-------------------------
 
-const { itemId } = route.params;
+  const { itemId } = route.params;
 
-console.log('=============>',JSON.stringify(itemId))
+  console.log('=============>', JSON.stringify(itemId))
 
-// useEffect(() => {
-//   if (route.params?.itemId) {
-//     setTokenId(itemId)
-//     console.log('---UPDATED>>>')
-//     // For example, send the post to the server
-//   }
-// }, [route.params?.post]);
+  // useEffect(() => {
+  //   if (route.params?.itemId) {
+  //     setTokenId(itemId)
+  //     console.log('---UPDATED>>>')
+  //     // For example, send the post to the server
+  //   }
+  // }, [route.params?.post]);
   // const callLocalData = async () => {
   //   try {
   // //  await AsyncStorage.getItem('tokens');
@@ -56,8 +55,6 @@ console.log('=============>',JSON.stringify(itemId))
   //   }
   // };
 
-
-  
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
@@ -82,8 +79,6 @@ console.log('=============>',JSON.stringify(itemId))
     setSeconds(30);
   };
 
-  
-
   const otpHandler = (message) => {
     const otp = /(\d{4})/g.exec(message)[1];
     setValue({ otp });
@@ -93,10 +88,10 @@ console.log('=============>',JSON.stringify(itemId))
   }
   console.log(value);
 
-// -----------------OTP VERIFY POST API CALL ----------------------------
-    
+  // -----------------OTP VERIFY POST API CALL ----------------------------
+
   const OtpData = () => {
-    fetch('http://192.168.1.5:7000/users/registerValidateOTP', {
+    fetch(`${REACT_APP_BASE_URL}/registerValidateOTP`, {
       method: 'POST',
       body: JSON.stringify({
         "id": itemId,
@@ -107,64 +102,64 @@ console.log('=============>',JSON.stringify(itemId))
       },
     })
       .then((response) => response.json())
-       .then((data) => {
-       
-        if(data.status == true){
+      .then((data) => {
+
+        if (data.status == true) {
           setModalVisible(true)
-      } else{
-        alert(data.message)
-      }
-     
-      // 
-       })
-       .catch((err) => {
+        } else {
+          alert(data.message)
+        }
+
+        //  
+      })
+      .catch((err) => {
         alert(err.message)
-        alert('Please Enter Valid OTP No')
+        //  alert('Please Enter Valid OTP No')
         console.log(err.message);
-        
+
       })
   };
- const OtpValidate=()=>{
-  OtpData()
-}
+  const OtpValidate = () => {
+    OtpData()
+  }
 
-// -----------------PAN CARD API CALL ----------------------------
-let newId= itemId
+  // -----------------PAN CARD API CALL ----------------------------
+  let newId = itemId
 
-const PanCardData = () => {
-  fetch('http://192.168.1.5:7000/users/registerPAN', {
-    method: 'POST',
-    body: JSON.stringify({
-      "id": newId,
-      "PAN": panValue
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.json())
-     .then((data) => {
-      console.log('user Id is---> ',data.data.id)
-      console.log('pan status is ',data.status)
-      let newToks = data.data.id
-      let nToks= newToks.toString();
-      if(data.status == true){
-        setModalVisible(!modalVisible)
-              navigation.navigate('RegistrationForm',{
-                'itemIde':nToks
-              })
-      }
-      else{
-              alert(data.message)
-      }
+  const PanCardData = () => {
+    fetch(`${REACT_APP_BASE_URL}/registerPAN`, {
+      method: 'POST',
+      body: JSON.stringify({
+        "id": newId,
+        "PAN": panValue
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-    .catch((err) => {
-      console.log("----", err.message);
-    });
-};
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('user Id is---> ', data.data.id)
+        console.log('pan status is ', data.status)
+        let newToks = data.data.id
+        let nToks = newToks.toString();
+        if (data.status == true) {
+          setModalVisible(!modalVisible)
+          navigation.navigate('RegistrationForm', {
+            'itemIde': nToks
+          })
+        }
+        else {
+          alert(data.message)
+        }
+      })
+      .catch((err) => {
+        console.log("----", err.message);
+      });
+  };
   const register = () => {
     PanCardData()
-       console.log(panValue);
+    console.log(panValue);
   }
 
   return (
@@ -199,6 +194,7 @@ const PanCardData = () => {
               </View>
             )}
           />
+
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={resendOTP} style={{ width: 120, margin: 18 }}>
               <Text style={{ fontSize: 20 }}>Resend OTP </Text>
@@ -233,15 +229,15 @@ const PanCardData = () => {
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>Enter PAN NO</Text>
                   <TextInput placeholder='XXXXXXXX'
-                   onChangeText={(panValue) => setPanValue(panValue)}
-                  maxLength={10} autoCapitalize={"characters"}
+                    onChangeText={(panValue) => setPanValue(panValue)}
+                    maxLength={10} placeholderTextColor="grey" autoCapitalize={"characters"}
                     style={{
                       fontSize: 24, margin: 29, borderWidth: 1, borderRadius: 10, width: '70%',
-                      justifyContent: 'center', alignItems: 'center', textAlign: 'center'
+                      justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: 'black'
                     }} />
                   <TouchableOpacity
                     style={[styles.buttons, styles.buttonClose]}
-                    onPress= { register}>
+                    onPress={register}>
                     <Text style={styles.textStyle}>Processed</Text>
                   </TouchableOpacity>
                 </View>
@@ -252,8 +248,8 @@ const PanCardData = () => {
 
             <TouchableOpacity
               style={[styles.buttonStyle, styles.buttonOpen]}
-             
-              onPress={() => {OtpValidate()}}>
+
+              onPress={() => { OtpValidate() }}>
 
               <Text style={styles.buttonTextStyle}>
                 Verify OTP
@@ -291,7 +287,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  title: { textAlign: 'center', fontSize: 30, marginTop: 40, },
+  title: { textAlign: 'center', fontSize: 30, marginTop: 40, color: 'black' },
   codeFieldRoot: {
     marginTop: 40,
     width: 280,
@@ -397,7 +393,9 @@ const styles = StyleSheet.create({
     marginTop: 45,
     textAlign: 'center',
     fontSize: 24,
+    color: 'black'
   },
 });
 
 export default OtpScreen;
+ 

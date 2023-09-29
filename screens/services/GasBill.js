@@ -12,7 +12,6 @@ import {View,Text,TextInput,TouchableOpacity,StyleSheet} from 'react-native'
 const GasBill=({ navigation, route })=>{
   let countryCode= '+91'
 
-
   const [value, setValue] = useState(null);
   return(
     <View style={{padding:20,marginTop:'10%',}}>

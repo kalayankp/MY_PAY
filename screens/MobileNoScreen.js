@@ -1,23 +1,25 @@
 
 import React, { useRef, useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, View, Image, Button, TextInput, Linking, TouchableOpacity, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, SafeAreaView, Text, View, Image, Button, TextInput, Linking, TouchableOpacity, Alert,Keyboard } from 'react-native';
+  
+import { REACT_APP_BASE_URL } from "@env"
 
 export default function MobileNoScreen({ navigation }) {
-
+   
   const [username, setUsername] = useState('')
-  // const [password, setPassword] = useState('')
+  // const [password, setPassword] = useState('')  
   const [token, setToken] = useState('')
-
+    console.log("mobNO",username)
   const validateMobilenumber = (Mobilenumber) => {
     const MobilenumberRegex = /^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/
     return MobilenumberRegex.test(Mobilenumber);
   };
   const code = '+91 -'
-
+  const maxLength = 10; 
+  
   const getDataUsingPost = () => {
-
-    fetch('http://192.168.1.5:7000/users/registerMobile', {
+ 
+    fetch(`${REACT_APP_BASE_URL}/registerMobile`, {
       method: 'POST',
       body: JSON.stringify({
         "mobile": username
@@ -25,18 +27,18 @@ export default function MobileNoScreen({ navigation }) {
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    })   
       .then((response) => response.json())
       .then((data) => {
         let otp = data.data.OTP;
         let newOTP = otp.toString();
         console.log(newOTP);
         let newTok = data.id
-        let nTok = newTok.toString();
-        if (data.status === true) {
+        let nTok = newTok
+        if (data.status === true && username.length == maxLength){
           navigation.navigate('OtpScreen', {
             'itemId': nTok
-          })
+          })  
         }
         // console.log('nToken is---',token);
         // console.log('nToken is--->>',nTok);
@@ -46,16 +48,28 @@ export default function MobileNoScreen({ navigation }) {
         ]);
       })
       .catch((err) => {
-        alert('Please Enter Valid Mobile No')
+        alert(err.message)
         console.log("----", err.message);
       })
   };
+  const handleTextChange = (inputText) => {
+        setUsername(inputText);
+    if(inputText.length == maxLength) {  
+        // handleBlur()
+        // getDataUsingPost()    
+    }
+  };
 
+  const handleBlur = () => {
+    Keyboard.dismiss(); 
+  
+  };
   const onSubmit = () => {
     //  await AsyncStorage.setItem('tokens',newToken)
     // console.log('saved------------------',token)
     // if (username === '9876543222') {
-    getDataUsingPost()
+      handleBlur()
+      getDataUsingPost()
     validateMobilenumber()
     // } else {
     //   alert('Enter Valid Mobile No')
@@ -63,11 +77,9 @@ export default function MobileNoScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-
+  <SafeAreaView>
+      <View style={styles.container}> 
         <Image style={styles.logo} source={require('../assests/icons/ringpeIcons.png')} />
-
         <Text
           style={{
             marginTop: 22,
@@ -81,11 +93,11 @@ export default function MobileNoScreen({ navigation }) {
 
         <View style={{ flexDirection: 'row', borderWidth: 3, borderColor: 'black', borderRadius: 22, marginTop: "1%", margin: 12 }}>
           <Text style={{ margin: 10, fontSize: 20, color: 'black' }}>{code}</Text>
-          <TextInput onChangeText={(value) => setUsername(value)} placeholder="10 Digit Mobile No" maxLength={10} keyboardType="numeric" style={styles.textInputStyle} />
+          <TextInput onChangeText={handleTextChange} placeholder="10 Digit Mobile No" placeholderTextColor="black" keyboardType="numeric" maxLength={maxLength} style={styles.textInputStyle} />
         </View>
 
         <View style={{ marginTop: 200, alignItems: 'center' }}>
-          <Text style={{ margin: 10, fontSize: 16, }}>
+          <Text style={{ margin: 10, fontSize: 16, color: "black" }}>
             By proceeding,you are agreeing to wallet's App
             <TouchableOpacity
               onPress={() => { Linking.openURL('') }}
@@ -101,7 +113,7 @@ export default function MobileNoScreen({ navigation }) {
             <Text style={styles.buttonText}>Processed</Text>
           </TouchableOpacity>
         </View>
-        <View style={{marginTop:21}}></View>
+        <View style={{ marginTop: 21 }}></View>
 
 
       </View>
@@ -112,7 +124,6 @@ export default function MobileNoScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     margin: 1,
-
   },
   logo: {
     marginTop: -28,

@@ -8,7 +8,7 @@
 //  }) => {
 //   const handleLoginPress = () => {
 //     navigation.navigate('Home')
-
+ 
 //   };
 //   const [emailid, setEmailId] = useState('');
 //   const [error, setError] = useState(null);
@@ -368,7 +368,7 @@ const [loading,setLoading] = useState(false)
               />
               {errors.address && (
                 <Text style={styles.errorText}> {errors.address}</Text>
-              )}
+              )} 
               <Text style={styles.title}>AADHAR NO *</Text>
               <TextInput
                 style={styles.input}

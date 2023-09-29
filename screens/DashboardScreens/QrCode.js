@@ -9,6 +9,6 @@ const QrCode = () => {
       </View>
     </View>
   )
-}
+} 
 
 export default QrCode
