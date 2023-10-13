@@ -160,7 +160,7 @@ const LoginScreen = ({ navigation }) => {
             <View style={{ flexDirection: 'row', margin: -10, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ fontSize: 16, color: 'black' }}>Don't have Account</Text>
               <TouchableOpacity onPress={() => navigation.navigate('MobileNoScreen')}>
-                <Text style={{ paddingLeft: 10, color: 'blue', fontSize: 18 }}>SIGNUP</Text>
+                <Text style={{ paddingLeft: 11, color: 'blue', fontSize: 18 }}>SIGNUP</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }} onPress={() => navigation.navigate('ForgetPassword')}>
@@ -187,24 +187,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     marginTop: 40,
-    marginLeft: 35,
-    marginRight: 35,
+    marginLeft: 34,
+    marginRight: 33,
   },
   linearGradient: {
     paddingLeft: 15,
-    paddingRight: 15,
+    paddingRight: 14,
     borderRadius: 5,
     width: '100%',
     height: '100%',
   },
   logo: {
-    marginTop: -62,
+    marginTop: -61,
     width: 240,
     height: 220,
     marginLeft: -2,
   }, 
   button: {
-    borderWidth: 5,
+    borderWidth: 6,
     borderRadius: 22,
     borderColor: '#3f46c8',
     height: 58,
@@ -212,12 +212,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     marginTop: 90,
-    margin: 20,
+    margin: 21,
     backgroundColor: '#3f46c8'
   },   
   buttonText: {
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 26,
     color: 'lightgrey',
     fontWeight: '12',
   },

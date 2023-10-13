@@ -62,7 +62,7 @@ const StackNavigation = () => {
   const Stack = createNativeStackNavigator();
   return (
 
-    <Stack.Navigator initialRouteName="FastTagForm">
+    <Stack.Navigator initialRouteName="Homes">
       <Stack.Screen name="DatePick" component={DatePick} options={{ headerShown: false, }} />
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false, }} />
       <Stack.Screen name="LoginScreens" component={LoginScreens} options={{ headerShown: false, animation: 'slide_from_right' }} />
